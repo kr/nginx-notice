@@ -9,6 +9,7 @@
 #include <ngx_core.h>
 #include <ngx_http.h>
 
+#define ALLOWED_METHODS (NGX_HTTP_GET|NGX_HTTP_HEAD|NGX_HTTP_PUT|NGX_HTTP_POST)
 
 static void *
 ngx_http_notice_create_loc_conf(ngx_conf_t *cf);
@@ -124,7 +125,7 @@ ngx_http_notice_handler(ngx_http_request_t *r)
 
     nlcf = ngx_http_get_module_loc_conf(r, ngx_http_notice_module);
 
-    if (!(r->method & (NGX_HTTP_GET|NGX_HTTP_HEAD))) {
+    if (!(r->method & ALLOWED_METHODS)) {
         return NGX_HTTP_NOT_ALLOWED;
     }
 
