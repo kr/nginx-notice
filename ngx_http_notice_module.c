@@ -37,6 +37,13 @@ static ngx_command_t  ngx_http_notice_commands[] = {
       offsetof(ngx_http_notice_conf_t, path),
       &ngx_http_notice_post },
 
+    { ngx_string("notice_type"),
+      NGX_HTTP_LOC_CONF|NGX_CONF_TAKE1,
+      ngx_conf_set_str_slot,
+      NGX_HTTP_LOC_CONF_OFFSET,
+      offsetof(ngx_http_notice_conf_t, type),
+      NULL },
+
       ngx_null_command
 };
 
