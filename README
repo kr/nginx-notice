@@ -1,8 +1,18 @@
-This is an nginx module designed to display notices of downtime, ignoring the
-usual semantics of HTTP methods GET, PUT, and POST, and returning a fixed
-response body for every request. It was originally written for the Causes on
-Facebook application, since every Facebook request is a POST (regardless of the
-intended effects, if any, on server state).
+Greetings!
+
+This is the README for nginx-notice version 1.
+
+______________________________________________________________________
+About
+
+Nginx-notice is an nginx module designed to display notices of downtime,
+ignoring the usual semantics of HTTP methods GET, PUT, and POST, and returning
+a fixed response body for every request. It was originally written for the
+Causes on Facebook application, since every Facebook request is a POST
+(regardless of the intended effects, if any, on server state).
+
+______________________________________________________________________
+Installation
 
 To compile this module, you must recompile nginx itself. Once you are
 comfortable with configuring and compiling nginx, you can use this module by
@@ -15,6 +25,15 @@ could type:
 
 Then compile and install nginx as you normally would.
 
-Have fun!
+______________________________________________________________________
+Bugs
+
+  * There is a hard limit on the size of the notice that this module will send,
+    by default 100KiB. You can change this by editing the source file.
+  * This module does not log errors.
+
+______________________________________________________________________
+
+That's all. Have fun!
 
 kr
