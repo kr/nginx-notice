@@ -9,6 +9,8 @@
 #include <ngx_core.h>
 #include <ngx_http.h>
 
+#define NOTICE_BUF_SIZE 102400 /* 100KiB */
+
 #define ALLOWED_METHODS (NGX_HTTP_GET|NGX_HTTP_HEAD|NGX_HTTP_PUT|NGX_HTTP_POST)
 
 static void *
@@ -48,8 +50,6 @@ static ngx_command_t  ngx_http_notice_commands[] = {
       ngx_null_command
 };
 
-
-static u_char  ngx_notice[] = { 'g', 'o', 'o', 'd', '\n', '\n' };
 
 
 static ngx_http_module_t  ngx_http_notice_module_ctx = {
@@ -118,10 +118,11 @@ ngx_http_notice_merge_loc_conf(ngx_conf_t *cf, void *parent, void *child)
 static ngx_int_t
 ngx_http_notice_handler(ngx_http_request_t *r)
 {
-    ngx_int_t     rc;
+    ngx_int_t     rc, i, n;
     ngx_buf_t    *b;
     ngx_chain_t   out;
     ngx_http_notice_conf_t *nlcf;
+    u_char notice[NOTICE_BUF_SIZE];
 
     nlcf = ngx_http_get_module_loc_conf(r, ngx_http_notice_module);
 
@@ -155,13 +156,18 @@ ngx_http_notice_handler(ngx_http_request_t *r)
     out.buf = b;
     out.next = NULL;
 
-    b->pos = ngx_notice;
-    b->last = ngx_notice + sizeof(ngx_notice);
+    for (i = 0; i < 6; i++) {
+      notice[i] = "good\n\n"[i];
+    }
+    n = 6;
+
+    b->pos = notice;
+    b->last = notice + n;
     b->memory = 1;
     b->last_buf = 1;
 
     r->headers_out.status = NGX_HTTP_OK;
-    r->headers_out.content_length_n = sizeof(ngx_notice);
+    r->headers_out.content_length_n = n;
     r->headers_out.last_modified_time = 23349600;
 
     rc = ngx_http_send_header(r);
