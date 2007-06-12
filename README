@@ -26,6 +26,42 @@ could type:
 Then compile and install nginx as you normally would.
 
 ______________________________________________________________________
+Configuration
+
+Once the module is installed, you will have two new configuration directives.
+
+Example:
+
+  server {
+    if (-f /path/to/notice.txt) {
+      rewrite ^(.*)$ /notice.txt;
+      break;
+    }
+
+    location = /notice.txt {
+      notice /path/to/notice.txt;
+      notice_type text/plain;
+      break;
+    }
+  }
+
+For the "notice" directive:
+
+  * syntax: notice path
+  * default: None
+  * context: location
+
+  Enables display of the maintenance notice for this location.
+
+For the "notice_type" directive:
+
+  * syntax: notice_type type
+  * default: text/html
+  * context: location
+
+  Sets the content-type of the notice for this location.
+
+______________________________________________________________________
 Bugs
 
   * There is a hard limit on the size of the notice that this module will send,
