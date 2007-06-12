@@ -1,0 +1,20 @@
+This is an nginx module designed to display notices of downtime, ignoring the
+usual semantics of HTTP methods GET, PUT, and POST, and returning a fixed
+response body for every request. It was originally written for the Causes on
+Facebook application, since every Facebook request is a POST (regardless of the
+intended effects, if any, on server state).
+
+To compile this module, you must recompile nginx itself. Once you are
+comfortable with configuring and compiling nginx, you can use this module by
+adding "--add-module=/path/to/this/directory" to your configure options.
+
+For example, to compile nginx with the default options plus this module, you
+could type:
+
+ $ ./configure --add-module=/path/to/this/directory
+
+Then compile and install nginx as you normally would.
+
+Have fun!
+
+kr
