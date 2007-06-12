@@ -118,7 +118,8 @@ ngx_http_notice_merge_loc_conf(ngx_conf_t *cf, void *parent, void *child)
 static ngx_int_t
 ngx_http_notice_handler(ngx_http_request_t *r)
 {
-    ngx_int_t     rc, i, n;
+    ngx_int_t     rc, n;
+    ngx_fd_t      fd;
     ngx_buf_t    *b;
     ngx_chain_t   out;
     ngx_http_notice_conf_t *nlcf;
@@ -156,10 +157,17 @@ ngx_http_notice_handler(ngx_http_request_t *r)
     out.buf = b;
     out.next = NULL;
 
-    for (i = 0; i < 6; i++) {
-      notice[i] = "good\n\n"[i];
+    fd = ngx_open_file(nlcf->path.data, NGX_FILE_RDONLY, NGX_FILE_OPEN, 0);
+    if (fd == NGX_INVALID_FILE) {
+        /* TODO: log an error */
+        return NGX_HTTP_NOT_FOUND;
     }
-    n = 6;
+
+    n = ngx_read_fd(fd, notice, NOTICE_BUF_SIZE);
+    if (n == NGX_FILE_ERROR) {
+        /* TODO: log an error */
+        return NGX_HTTP_NOT_FOUND;
+    }
 
     b->pos = notice;
     b->last = notice + n;
