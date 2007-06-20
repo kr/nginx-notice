@@ -191,6 +191,12 @@ ngx_http_notice_handler(ngx_http_request_t *r)
         return NGX_HTTP_NOT_FOUND;
     }
 
+    rc = ngx_close_file(fd);
+    if (rc == NGX_FILE_ERROR) {
+        /* TODO: log an error */
+        /* but continue on with the request, because we have the data now */
+    }
+
     b->pos = notice;
     b->last = notice + n;
     b->memory = 1;
