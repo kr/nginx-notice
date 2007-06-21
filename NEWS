@@ -1,0 +1,7 @@
+Release 2, 2007-06-21
+
+  * Bug fix: close the notice file after reading it.
+
+Release 1, 2007-06-12
+
+  * Initial release
